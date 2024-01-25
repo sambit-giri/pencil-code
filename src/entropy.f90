@@ -1505,12 +1505,7 @@ module Energy
             call blob(ampl_ss(j),f,iss,radius_ss(j),center1_x(j),center1_y(j),center1_z(j),radius_ss_x(j))
           case ('blob_radeq')
             call blob_radeq(ampl_ss(j),f,iss,radius_ss(j),center1_x(j),center1_y(j),center1_z(j))
-          case ('isothermal')
-            if (ldensity_nolog) then
-              call isothermal_entropy(log(f(:,:,:,irho)),T0,f(:,:,:,iss))
-            else
-              call isothermal_entropy(f(:,:,:,ilnrho),T0,f(:,:,:,iss))
-            endif
+          case ('isothermal'); call isothermal_entropy(f(:,:,:,ilnrho),T0,f(:,:,:,iss))
           case ('isothermal_lnrho_ss')
             if (lroot) print*, 'init_energy: Isothermal density and entropy stratification'
             call isothermal_lnrho_ss(f(:,:,:,ilnrho),T0,rho0,f(:,:,:,iss))
@@ -1542,6 +1537,18 @@ module Energy
           case('x-y-jump'); call jump(f,iss,ss_left,ss_right,widthss,xjump_mid,yjump_mid,zjump_mid,'x-y')
           case('sinxsinz'); call sinxsinz(ampl_ss(j),f,iss,kx_ss,ky_ss,kz_ss)
           case('cosx_cosy_cosz'); call cosx_cosy_cosz(ampl_ss(j),f,iss,kx_ss,ky_ss,kz_ss)
+          
+          case ('sinwave-x')
+            call sinwave(ampl_ss(j),f,iss,kx=kx_ss)
+          case ('sinwave-y')
+            call sinwave(ampl_ss(j),f,iss,ky=ky_ss)
+          case ('coswave-x')
+            call coswave(ampl_ss(j),f,iss,kx=kx_ss)
+          case ('coswave-y')
+            call coswave(ampl_ss(j),f,iss,ky=ky_ss)
+          case ('coswave-z')
+            call coswave(ampl_ss(j),f,iss,kz=kz_ss)
+
           case('hor-fluxtube')
             call htube(ampl_ss(j),f,iss,iss,radius_ss(j),epsilon_ss,center1_x(j),center1_z(j))
           case ('hor-tube')
